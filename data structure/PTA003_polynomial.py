@@ -3,7 +3,9 @@
 
 def getPoly(string):
   slist = string.split(' ')
-  r = [[int(slist[i+1]),eval(slist[i])] for i in range(1,len(slist)-1,2)]
+  if slist == [] or slist[0] == '0':
+    return [[0,0]]
+  r = [[int(slist[i+1]),eval(slist[i])] for i in range(1,len(slist)-1,2) if slist[i] != '0']
   r.sort(reverse=True)
   return r
 
@@ -43,18 +45,31 @@ def sumPoly1(p1,p2):
   # print(r)
   return r
 
+def sumPoly2(p1, p2):
+  r = p1 + p2
+  r.sort(reverse=True)
+  i = 0
+  while i < len(r) - 1:
+    if r[i][0] == r[i+1][0]:
+      r[i][1] += r[i+1][1]
+      r.pop(i+1)
+    if r[i][1] == 0:
+      r.pop(i)
+      i -= 1
+    i += 1
+  if r==[]: return [[0,0]]
+  else: return r
+
 def multiPoly1(p1, p2):
-  # print('p1=',p1)
-  # print('p2=',p2)
+  if p1==[[0,0]] or p2==[[0,0]]:
+    return [[0,0]]
   r = []
   for i in p1:
     r1 = []
     for j in p2:
       r1 += [[i[0]+j[0],i[1]*j[1]]]
     r1.sort(reverse=True)
-    # print('r1=',r1)
-    r = sumPoly1(r,r1)
-    # print('r=',r)
+    r = sumPoly2(r,r1)
   return r
 
 def sumPoly(p1,p2):
@@ -66,14 +81,15 @@ def multiPoly(p1,p2):
   return ' '.join(r)
 
 def main():
-  # p1 = getPoly(input())
-  # p2 = getPoly(input())
-  p1 = '4 3 4 -5 2 6 1 -2 0'
-  p2 = '3 5 20 -7 4 3 1'
+  p1 = getPoly(input())
+  p2 = getPoly(input())
+  # p1 = '4 3 8 -5 2 6 1 -2 0'
+  # p2 = '3 5 20 -7 4 3 1'
   # print(getPolyorm(p1))
-  # print(multiPoly(p1,p2))
-  print(multiPoly(getPoly(p1),getPoly(p2)))
-  print(sumPoly(getPoly(p1),getPoly(p2)))
+  print(multiPoly(p1,p2))
+  print(sumPoly(p1,p2))
+  # print(multiPoly(getPoly(p1),getPoly(p2)))
+  # print(sumPoly(getPoly(p1),getPoly(p2)))
 
 
 if __name__ == '__main__':
