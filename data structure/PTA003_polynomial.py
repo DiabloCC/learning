@@ -81,15 +81,15 @@ def multiPoly(p1,p2):
   return ' '.join(r)
 
 def main():
-  p1 = getPoly(input())
-  p2 = getPoly(input())
-  # p1 = '4 3 8 -5 2 6 1 -2 0'
-  # p2 = '3 5 20 -7 4 3 1'
+  # p1 = getPoly(input())
+  # p2 = getPoly(input())
+  p1 = '4 3 8 -5 4 8 1 -2 0'
+  p2 = '3 5 26 -7 4 3 1 6 0'
   # print(getPolyorm(p1))
-  print(multiPoly(p1,p2))
-  print(sumPoly(p1,p2))
-  # print(multiPoly(getPoly(p1),getPoly(p2)))
-  # print(sumPoly(getPoly(p1),getPoly(p2)))
+  # print(multiPoly(p1,p2))
+  # print(sumPoly(p1,p2))
+  print(multiPoly(getPoly(p1),getPoly(p2)))
+  print(sumPoly(getPoly(p1),getPoly(p2)))
 
 
 if __name__ == '__main__':
