@@ -19,3 +19,4 @@ deploy_key_rs
 .idlerc
 .bash_history
 .viminfo
+.gitconfig
