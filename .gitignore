@@ -8,6 +8,7 @@ Desktop.ini
 *.so
 *.egg
 *.egg-info
+.last_tmp.py
 dist
 build
 
