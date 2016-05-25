@@ -62,6 +62,15 @@ class Car(object):
         return description_string
 
 
+class BMW(Car):
+    def engin(self, message):
+        # this whill cause an error:
+        #   'super' object has no attribute '_color'
+        super(BMW, self)._color = 'black'
+        print(super(BMW, self).description('BMW'))
+        print(message)
+
+
 def test_car():
     car1 = Car()
     car1._color = 'golden'  # 实例可以重写类属性
@@ -78,9 +87,30 @@ def test_car():
     print(car1.name)
 
 
+def test_super():
+    car2 = BMW()
+    car2.engin('The engin is more powerful than ever!')
+
+
+def test_class_attribute():
+    car3 = Car()
+    print(car3.description('charlie'))
+    Car._color = 'black'
+    print('This is Car._color:\t', Car._color, id(Car._color))
+    print('This is car3._color:\t', car3._color, id(car3._color))
+    car3._color = 'green'
+    print('This is Car._color:\t', Car._color, id(Car._color))
+    print('This is car3._color:\t', car3._color, id(car3._color))
+    del car3._color
+    print('This is Car._color:\t', Car._color, id(Car._color))
+    print('This is car3._color:\t', car3._color, id(car3._color))
+
+
 def main():
     # test_pupil()
-    test_car()
+    # test_car()
+    # test_super()
+    test_class_attribute()
 
 if __name__ == '__main__':
     main()
