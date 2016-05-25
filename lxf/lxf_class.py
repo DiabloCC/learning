@@ -106,11 +106,74 @@ def test_class_attribute():
     print('This is car3._color:\t', car3._color, id(car3._color))
 
 
+class screen():
+    # if __slots__ is set, the following property definition will cause error
+    # __slots__ = ('name', 'id')
+
+    _resolution = 300
+
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self, value):
+        if not isinstance(value, int):
+            raise ValueError('screen width must be an integer!')
+        if value < 0:
+            raise ValueError('screen width must larger than 0!')
+        self._width = value
+
+    @property
+    def height(self):
+        return self._height
+
+    @height.setter
+    def height(self, value):
+        if not isinstance(value, int):
+            raise ValueError('screen height must be an integer!')
+        if value < 0:
+            raise ValueError('screen height must larger than 0!')
+        self._height = value
+
+    @property
+    def resolution(self):
+        return self._resolution
+
+
+class window(screen):
+    __slots__ = ('name', 'id')
+
+
+def test_property():
+    s = screen()
+    # s.width = -1
+    # s.width = '222'
+    s.width = 1024
+    # s.height = -32
+    # s.height = 11.25
+    # s.height = 'fg'
+    s.height = 768
+    print('s.width = %d\ts.height = %d\ts.resolution = %d' %
+          (s.width, s.height, s.resolution))
+    # test __slots__
+    s = window()
+    s.width = 1440
+    s.height = 1024
+    print('s.width = %d\ts.height = %d\ts.resolution = %d' %
+          (s.width, s.height, s.resolution))
+    s.name = 'desktop'
+    s.id = 6
+    print('s.name = %s\ts.id = %d' % (s.name, s.id))
+    s.depth = 8
+
+
 def main():
     # test_pupil()
     # test_car()
     # test_super()
-    test_class_attribute()
+    # test_class_attribute()
+    test_property()
 
 if __name__ == '__main__':
     main()
