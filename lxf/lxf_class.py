@@ -110,7 +110,7 @@ class screen():
     # if __slots__ is set, the following property definition will cause error
     # __slots__ = ('name', 'id')
 
-    _resolution = 300
+    # _resolution = 300
 
     @property
     def width(self):
@@ -138,7 +138,7 @@ class screen():
 
     @property
     def resolution(self):
-        return self._resolution
+        return self._width * self._height
 
 
 class window(screen):
@@ -168,12 +168,115 @@ def test_property():
     s.depth = 8
 
 
+class animal(object):
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise ValueError("Name must be a string!")
+        if value == '':
+            raise ValueError("Name can not be empty!")
+        self._name = value
+
+    @property
+    def cate(self):
+        return self._cate
+
+    @cate.setter
+    def cate(self, value):
+        if not isinstance(value, str):
+            raise ValueError("Category must be a string!")
+        if value == '':
+            raise ValueError("Category can not be empty!")
+        self._cate = value
+
+    def shout(self):
+        print('I\'m a %s and my name is %s.' % (self.cate, self.name))
+        print('I have voice. I can make noise.')
+
+    def child(self):
+        print('I can have children just like me.')
+
+
+class mammal(animal):
+    def __init__(self):
+        # no need to use super(). It may cause error
+        # super(mammal, self).cate = 'Mammal'
+        self.cate = 'Mammal'
+
+    def child(self):
+        # print('I\'m a %s.' % self.cate)
+        print('I can born children and feed them with my milk.')
+
+
+class bird(animal):
+    def __init__(self):
+        self.cate = 'Bird'
+
+    def child(self):
+        # print('I\'m a %s.' % self.cate)
+        super(bird, self).child()
+        print('I can lay eggs and hatch them.')
+
+
+class runnable(object):
+    def run(self):
+        print('I can run with my legs.')
+
+
+class flyable(object):
+    def fly(self):
+        print('I can fly with my wings.')
+
+
+class dog(mammal, runnable):
+    def __init__(self, name):
+        # no need to use super(). It may cause error
+        # super(dog, self)._name = name
+        super(dog, self).__init__()
+        self.name = name
+
+
+class parrot(bird, flyable):
+    def __init__(self, name):
+        super(parrot, self).__init__()
+        self.name = name
+
+
+class bat(mammal, flyable):
+    def __init__(self, name):
+        super(bat, self).__init__()
+        self.name = name
+
+
+def test_mixin():
+    doggie = dog('Doggie')
+    doggie.shout()
+    doggie.run()
+    doggie.child()
+    print('-------------')
+    littleP = parrot('Mimi')
+    littleP.shout()
+    littleP.fly()
+    # littleP.bornchild()
+    littleP.child()
+    print('-------------')
+    batman = bat('Batman')
+    batman.shout()
+    batman.fly()
+    batman.child()
+
+
 def main():
     # test_pupil()
     # test_car()
     # test_super()
     # test_class_attribute()
-    test_property()
+    # test_property()
+    test_mixin()
 
 if __name__ == '__main__':
     main()
