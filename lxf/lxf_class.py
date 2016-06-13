@@ -356,7 +356,7 @@ class Chain():
         else:
             path1 = path[: lp]
             path2 = path[lp+1: -1]
-            path2.replace('\'').replace('\"')
+            # path2.replace('\'').replace('\"')
             return Chain("%s/%s/%s" % (self._path, path1, path2))
 
     def __str__(self):
