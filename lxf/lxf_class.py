@@ -270,13 +270,89 @@ def test_mixin():
     batman.child()
 
 
+class Fib():
+    def __init__(self):
+        self.a = 0
+        self.b = 1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.a, self.b = self.b, self.a + self.b
+        if self.a > 1000:
+            raise StopIteration()
+        return self.a
+
+    def __str__(self):
+        return "An iterator that generates numbers in Fibernatch Array!"
+
+    def __getitem__(self, n):
+        if isinstance(n, int):
+            a, b = 1, 1
+            for x in range(n):
+                a, b = b, a + b
+            return a
+        if isinstance(n, slice):
+            start = n.start
+            stop = n.stop
+            step = n.step
+            L = []
+            if start is None:
+                start = 0
+            if stop is None:
+                raise ValueError("Slice stop value can not be None!")
+            if step is None:
+                step = 1
+            if start == stop:
+                return []
+            if step == 0:
+                raise ValueError("Slice step can not be zero!")
+            elif step > 0:
+                a, b = 0, 1
+                for x in range(stop):
+                    a, b = b, a + b
+                    if (x >= start) and (x - start) % step == 0:
+                        L.append(a)
+            else:
+                a, b = 0, 1
+                for x in range(start + 1):
+                    a, b = b, a + b
+                    if (x > stop) and (start - x) % (-step) == 0:
+                        L.append(a)
+                L.reverse()
+            return L
+
+    __repr__ = __str__
+
+
+def test_Fib():
+    fib = Fib()
+    print("**** test __str__() ****\n use print()\n")
+    print(fib)
+    print()
+    print("**** test __iter__() ****\nuse print(n)\n")
+    for n in fib:
+        print(n, end='\t')
+    print()
+    print("**** test __getitem ****\n")
+    print("--Fib[10]:\t%d" % fib[10])
+    print("--Fib[0:10]:\t", fib[0: 10])
+    print("--Fib[10:0:-1]:\t", fib[10: 0: -1])
+    print("--Fib[0:21]:\t", fib[0: 21])
+    print("--Fib[20:7:-3]:\t", fib[20: 7: -3])
+    print("--Fib[10:10]:\t", fib[10: 10])
+    # print("--Fib[10:11:0]:\t", fib[10: 11: 0])
+
+
 def main():
     # test_pupil()
     # test_car()
     # test_super()
     # test_class_attribute()
     # test_property()
-    test_mixin()
+    # test_mixin()
+    test_Fib()
 
 if __name__ == '__main__':
     main()
