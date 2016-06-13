@@ -345,6 +345,34 @@ def test_Fib():
     # print("--Fib[10:11:0]:\t", fib[10: 11: 0])
 
 
+class Chain():
+    def __init__(self, path=''):
+        self._path = path
+
+    def __getattr__(self, path):
+        lp = path.find('(')
+        if lp == -1:
+            return Chain("%s/%s" % (self._path, path))
+        else:
+            path1 = path[: lp]
+            path2 = path[lp+1: -1]
+            path2.replace('\'').replace('\"')
+            return Chain("%s/%s/%s" % (self._path, path1, path2))
+
+    def __str__(self):
+        return self._path
+
+    def __call__(self, path):
+        return Chain("%s/%s" % (self._path, path))
+
+
+def test_Chain():
+    c = Chain()
+    print(c('test').login.verify)
+    print(c.test1.login.ok)
+    print(c.users("DiabloCC").dashboard)
+
+
 def main():
     # test_pupil()
     # test_car()
@@ -352,7 +380,8 @@ def main():
     # test_class_attribute()
     # test_property()
     # test_mixin()
-    test_Fib()
+    # test_Fib()
+    test_Chain()
 
 if __name__ == '__main__':
     main()
