@@ -366,8 +366,46 @@ class Chain():
         return Chain("%s/%s" % (self._path, path))
 
 
+class Chain2():
+    def __init__(self, path=''):
+        self._path = []
+        self._path.append(path)
+
+    def __getattr__(self, path):
+        lp = path.find('(')
+        if lp == -1:
+            self._path.append(path)
+        else:
+            path1 = path[: lp]
+            path2 = path[lp+1: -1]
+            # path2.replace('\'').replace('\"')
+            # return Chain("%s/%s/%s" % (self._path, path1, path2))
+            self._path.append(path1)
+            self._path.append(path2)
+        return self
+
+    def __str__(self):
+        return "/".join(self._path)
+
+    def __call__(self, path):
+        self._path.append(path)
+        return self
+
+    __repr__ = __str__
+
+
 def test_Chain():
+    print('*** test Chain ***')
+    print('Instances can\'t keep value.')
+    print('-----------')
     c = Chain()
+    print(c('test').login.verify)
+    print(c.test1.login.ok)
+    print(c.users("DiabloCC").dashboard)
+    print('\n*** test Chain2 ***')
+    print('Instances can keep value.')
+    print('-----------')
+    c = Chain2()
     print(c('test').login.verify)
     print(c.test1.login.ok)
     print(c.users("DiabloCC").dashboard)
